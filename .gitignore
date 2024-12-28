@@ -1,0 +1,10 @@
+/DinnerApp/Dinner.Api/obj
+/DinnerApp/Dinner.Api/bin
+/DinnerApp/Dinner.Application/bin
+/DinnerApp/Dinner.Application/obj
+/DinnerApp/Dinner.Contracts/bin
+/DinnerApp/Dinner.Contracts/obj
+/DinnerApp/Dinner.Domain/bin
+/DinnerApp/Dinner.Domain/obj
+/DinnerApp/Dinner.Infrastructure/bin
+/DinnerApp/Dinner.Infrastructure/obj
