@@ -6,8 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 {
     //Here we are adding the DI container
     builder.Services.AddControllers();
-    builder.Services.AddApplication();
-    builder.Services.AddInfrastructure();
+    builder.Services
+        .AddApplication()
+        .AddInfrastructure(builder.Configuration);
 
 }
 
