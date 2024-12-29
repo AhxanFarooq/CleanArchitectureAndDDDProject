@@ -15,14 +15,14 @@ namespace Dinner.Api.Controllers
         public IActionResult Register(RegisterRequest request)
         {
             var register = _authenticationService.RegisterAsync(request.Email, request.Password, request.FirstName, request.LastName);
-            return Ok(new AuthenticationResponse(register.Email, register.FirstName, register.LastName, register.Token, register.Id));
+            return Ok(new AuthenticationResponse(register.User.Email, register.User.FirstName, register.User.LastName, register.Token, register.User.Id));
         }
 
         [HttpPost("login")]
         public IActionResult Login(LoginRequest request)
         {
             var login =  _authenticationService.LoginAsync(request.Email, request.Password);
-            return Ok(new AuthenticationResponse(login.Email, login.FirstName, login.LastName, login.Token, login.Id));
+            return Ok(new AuthenticationResponse(login.User.Email, login.User.FirstName, login.User.LastName, login.Token, login.User.Id));
         }
     }
 }

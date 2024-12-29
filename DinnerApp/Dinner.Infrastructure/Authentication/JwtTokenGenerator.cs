@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Dinner.Application.Common.Interface.Authentication;
 using Dinner.Application.Common.Interface.Services;
+using Dinner.Domain.Entities;
 using Dinner.Infrastructure.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -13,14 +14,14 @@ namespace Dinner.Infrastructure.Authentication
         private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
         private readonly JwtSetting _jwtSetting = jwtSetting.Value;
 
-        public string GenerateToken(Guid userId, string email, string firstName, string lastName, string role)
+        public string GenerateToken(User user, string role)
         {
             var claims = new []
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, email),
-                new Claim(JwtRegisteredClaimNames.GivenName, firstName),
-                new Claim(JwtRegisteredClaimNames.FamilyName, lastName),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
+                new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Role, role)
             };
