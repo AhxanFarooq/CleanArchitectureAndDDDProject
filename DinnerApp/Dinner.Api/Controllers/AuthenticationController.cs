@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Dinner.Contracts.Authentication;
 using Dinner.Application.Services.Authentication;
+using Dinner.Api.Filters;
 
 namespace Dinner.Api.Controllers
 {
