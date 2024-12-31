@@ -1,3 +1,4 @@
+using Dinner.Api.Mapping;
 using Dinner.Application;
 using Dinner.Infrastructure;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
     //Here we are adding the DI container
     
     builder.Services
+    .AddMapping()
         .AddApplication()
         .AddInfrastructure(builder.Configuration);
 

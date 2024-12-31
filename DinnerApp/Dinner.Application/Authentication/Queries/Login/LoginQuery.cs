@@ -4,4 +4,4 @@ using MediatR;
 
 namespace Dinner.Application.Authentication.Queries.Login;
 
-public record LoginCommand(string email, string password) : IRequest<ErrorOr<AuthenticationResponse>>;
+public record LoginQuery(string email, string password) : IRequest<ErrorOr<AuthenticationResponse>>;
