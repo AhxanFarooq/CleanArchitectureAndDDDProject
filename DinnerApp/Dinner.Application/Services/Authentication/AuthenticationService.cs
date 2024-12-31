@@ -1,6 +1,8 @@
 using Dinner.Application.Common.Interface.Authentication;
 using Dinner.Application.Common.Interface.Persistence;
+using Dinner.Domain.Common.Errors;
 using Dinner.Domain.Entities;
+using ErrorOr;
 
 namespace Dinner.Application.Services.Authentication;
 
@@ -8,19 +10,19 @@ public class AuthenticationService(IJwtTokenGenerator jwtTokenGenerator, IUserRe
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator = jwtTokenGenerator;
     private readonly IUserRepository _userRepository = userRepository;
-    public AuthResponse LoginAsync(string email, string password)
+    public ErrorOr<AuthResponse> LoginAsync(string email, string password)
     {
         // Check whether user exists in the database
     
         if (_userRepository.GetUserByEmailAsync(email) is not User user)
         {
-            throw new Exception("User not exists");
+            return Errors.User.InvalidCredentials;
         }
 
         //Validate password
         if(user.Password != password)
         {
-            throw new Exception("Invalid password");
+            return Errors.User.InvalidPassword;
         }
 
         //Generate Toke using jwt token generator
@@ -34,12 +36,12 @@ public class AuthenticationService(IJwtTokenGenerator jwtTokenGenerator, IUserRe
         );
     }
 
-    public AuthResponse RegisterAsync(string email, string password, string firstName, string lastName)
+    public ErrorOr<AuthResponse> RegisterAsync(string email, string password, string firstName, string lastName)
     {
         // Check whether user exists in the database
         if ( _userRepository.GetUserByEmailAsync(email) is not null)
         {
-            throw new Exception("User already exists");
+            return Errors.Authentication.DuplicateEmail;
         }
 
         //Create user
