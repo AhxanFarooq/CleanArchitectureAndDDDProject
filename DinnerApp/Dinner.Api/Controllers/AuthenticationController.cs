@@ -1,20 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Dinner.Contracts.Authentication;
-using Dinner.Application.Services.Authentication;
+using DinnerApp.Application.Authentication.Commands.Register;
+using MediatR;
+using Dinner.Application.Authentication.Queries.Login;
 
 namespace Dinner.Api.Controllers
 {
     
     [Route("auth")]
-    public class AuthenticationController(IAuthenticationService authenticationService) : BaseController
+    public class AuthenticationController(IMediator mediator) : BaseController
     {
-        private readonly IAuthenticationService _authenticationService = authenticationService;
-
-
+        private readonly IMediator _mediator = mediator;
         [HttpPost("register")]
-        public IActionResult Register(RegisterRequest request)
+        public async Task<IActionResult> Register(RegisterRequest request)
         {
-            var register = _authenticationService.RegisterAsync(request.Email, request.Password, request.FirstName, request.LastName);
+            var registerCommand = new RegisterCommand(request.Email, request.Password, request.FirstName, request.LastName);
+            var register = await _mediator.Send(registerCommand);
             return register.Match(
                 register => Ok(new AuthenticationResponse(register.User.Email, register.User.FirstName, register.User.LastName, register.Token, register.User.Id)),
                 error => Problem(error)
@@ -23,9 +24,10 @@ namespace Dinner.Api.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login(LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            var login =  _authenticationService.LoginAsync(request.Email, request.Password);
+            var loginCommand = new LoginCommand(request.Email, request.Password);
+            var login = await _mediator.Send(loginCommand);
             return login.Match(
                 login => Ok(new AuthenticationResponse(login.User.Email, login.User.FirstName, login.User.LastName, login.Token, login.User.Id)),
                 error => Problem(error)

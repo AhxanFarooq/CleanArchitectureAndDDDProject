@@ -14,7 +14,7 @@ namespace Dinner.Infrastructure.Authentication
         private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
         private readonly JwtSetting _jwtSetting = jwtSetting.Value;
 
-        public string GenerateToken(User user, string role)
+        public Task<string> GenerateToken(User user, string role)
         {
             var claims = new []
             {
@@ -38,7 +38,7 @@ namespace Dinner.Infrastructure.Authentication
                 signingCredentials: creds
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
         }
     }
 }

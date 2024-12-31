@@ -6,13 +6,14 @@ namespace Dinner.Infrastructure.Persistence
     public class UserRepository : IUserRepository
     {
        public static List<User> Users = new();
-        public void CreateUserAsync(User user)
+        public Task CreateUserAsync(User user)
         {
             Users.Add(user);
+            return Task.CompletedTask;
         }
-        public User? GetUserByEmailAsync(string email)
+        public Task<User?> GetUserByEmailAsync(string email)
         {
-            return Users.SingleOrDefault(x => x.Email == email);
+            return Task.FromResult(Users.SingleOrDefault(x => x.Email == email));
         }
     }
 }
